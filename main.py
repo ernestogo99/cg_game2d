@@ -13,7 +13,7 @@ from cg.cg import (
 
 
 pygame.init()
-screen = Screen(600, 600).screen
+screen = Screen.create_screen(600, 600)
 
 
 cat_texture = Texture.import_texture("cat_cg.jpeg")
