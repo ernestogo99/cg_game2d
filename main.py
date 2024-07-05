@@ -10,6 +10,7 @@ from cg.cg import (
     Polygon,
     Transformations
 )
+from characters.cat import Cat
 
 
 
@@ -20,18 +21,7 @@ clock = pygame.time.Clock()
 
 screen = Screen.create_screen(600, 600)
 
-
-cat_texture = Texture.import_texture("cat_cg.jpeg")
-cat = TexturePolygon(
-    [
-        [100, 100, 0, 0],
-        [100, 500, 0, 1],
-        [500, 500, 1, 1],
-        [500, 100, 1, 0]
-    ]
-)
-
-transform_cat = Transformations.create_transformation_matrix()
+cat = Cat()
 
 value = 1
 
@@ -42,16 +32,17 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+        # key commands
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                transform_cat = Transformations.compose_rotation(transform_cat, value)
-                cat = Transformations.apply_transformation(cat, transform_cat)
+                cat.rotate_cat(value)
 
     screen.fill((0, 0, 0))
 
-    Texture.scanline_with_texture(screen, cat, cat_texture)
+    cat.show_cat(screen)
 
     clock.tick(FPS)
+
     pygame.display.update()
 
 pygame.quit()
