@@ -1,6 +1,6 @@
 .PHONY: run
 run:
-	python3 main.py
+	poetry run python3 main.py
 
 .PHONY: clean
 clean:
