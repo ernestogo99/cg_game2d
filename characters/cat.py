@@ -13,12 +13,38 @@ class Cat:
                 [500, 100, 1, 0]
             ]
         )
-        self.transf_matrix = Transformations.create_transformation_matrix()
 
-    def show_cat(self, screen) -> None:
+    def draw(self, screen) -> None:
+        screen.fill((0, 0, 0))
         Texture.scanline_with_texture(screen, self.polygon, self.texture)
 
-    def rotate_cat(self, ang) -> None:
-        self.transf_matrix = Transformations.compose_rotation(self.transf_matrix, ang)
-        self.polygon = Transformations.apply_transformation(self.polygon, self.transf_matrix)
+    def rotate(self, ang, screen) -> None:
+        m = Transformations.create_transformation_matrix()
+        m = Transformations.compose_rotation(m, ang)
+        self.polygon = Transformations.apply_transformation(self.polygon, m)
+        self.draw(screen)
+
+    def move_right(self, dt, screen) -> None:
+        m = Transformations.create_transformation_matrix()
+        m = Transformations.compose_translation(m, 10*dt, 0)
+        self.polygon = Transformations.apply_transformation(self.polygon, m)
+        self.draw(screen)
+
+    def move_left(self, dt, screen) -> None:
+        m = Transformations.create_transformation_matrix()
+        m = Transformations.compose_translation(m, -10*dt, 0)
+        self.polygon = Transformations.apply_transformation(self.polygon, m)
+        self.draw(screen)
+
+    def move_down(self, dt, screen) -> None:
+        m = Transformations.create_transformation_matrix()
+        m = Transformations.compose_translation(m, 0, 10*dt)
+        self.polygon = Transformations.apply_transformation(self.polygon, m)
+        self.draw(screen)
+
+    def move_up(self, dt, screen) -> None:
+        m = Transformations.create_transformation_matrix()
+        m = Transformations.compose_translation(m, 0, -10*dt)
+        self.polygon = Transformations.apply_transformation(self.polygon, m)
+        self.draw(screen)
 

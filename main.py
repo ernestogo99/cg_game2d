@@ -13,7 +13,6 @@ from cg.cg import (
 from characters.cat import Cat
 
 
-
 pygame.init()
 
 FPS = 30
@@ -21,29 +20,45 @@ clock = pygame.time.Clock()
 
 screen = Screen.create_screen(600, 600)
 
-cat = Cat()
 
-value = 1
+def run():
+    cat = Cat()
 
-running = True
-while running:
-    
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+    dt = 1
 
-        # key commands
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                cat.rotate_cat(value)
+    cat.draw(screen)
+    pygame.display.flip()
 
-    screen.fill((0, 0, 0))
+    running = True
+    while running:
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
-    cat.show_cat(screen)
+            # key commands
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    cat.rotate(1, screen)
 
-    clock.tick(FPS)
+                if event.key == pygame.K_d:
+                    cat.move_right(dt, screen)
 
-    pygame.display.update()
+                if event.key == pygame.K_a:
+                    cat.move_left(dt, screen)
 
-pygame.quit()
+                if event.key == pygame.K_w:
+                    cat.move_up(dt, screen)
+
+                if event.key == pygame.K_s:
+                    cat.move_down(dt, screen)
+
+        clock.tick(FPS)
+        pygame.display.flip()
+
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    run()
 

@@ -1,4 +1,5 @@
 import pygame
+from pygame import gfxdraw
 import numpy as np
 import time
 from PIL import Image
@@ -187,8 +188,7 @@ class Draw:
         if y >= screen.get_height():
             y = screen.get_height() - 1
 
-        pixel = pygame.Rect((x, y, 1, 1))
-        pygame.draw.rect(screen, color, pixel)
+        gfxdraw.pixel(screen, x, y, color)
 
     def bresenham(screen, initial_x, initial_y, final_x, final_y, color):
         dx = final_x - initial_x
