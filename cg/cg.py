@@ -27,7 +27,7 @@ class Screen:
 
         return (color[0], color[1], color[2])
 
-    def mapping_window(p, window, viewport):
+    def mapping_window(polygon, window, viewport):
         initial_x_viewport = viewport[0]
         initial_y_viewport = viewport[1]
         final_x_viewport = viewport[2]
@@ -49,7 +49,7 @@ class Screen:
             ]
         )
 
-        return Transformations.apply_transformation(p, matrix)
+        return Transformations.apply_transformation(polygon, matrix)
 
 
 class Transformations:
