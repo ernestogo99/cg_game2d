@@ -22,14 +22,14 @@ screen = Screen.create_screen(500, 550)
 
 
 def viewport_test():
-    window_game = [0, 0, 500, 550]
-    viewport_game = [0, 0, 500, 550]
+    window = [0, 0, 1200, 1000]
+    # window = [0, 0, 500, 550]
+    viewport1 = [0, 0, 500, 550]
 
-    window_minimap = [0, 0, 450, 550]
-    viewport_minimap = [450, 0, 500, 55]
+    viewport2 = [450, 0, 500, 55]
 
-    windows = [window_game, window_minimap]
-    viewports = [viewport_game, viewport_minimap]
+    windows = [window]
+    viewports = [viewport1, viewport2]
 
     cat = Cat(screen, windows, viewports)
 
