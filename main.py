@@ -35,34 +35,59 @@ def viewport_test():
 
     dt = 1
 
-    running = True
-    while running:
-        
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+    while True:
+        if pygame.event.get(pygame.QUIT): break
+        pygame.event.pump()
 
-            # key commands
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    cat.rotate(1, screen)
+        # move up/down by checking for pressed keys
+        # and moving the paddle rect in-place
+        keys = pygame.key.get_pressed()
 
-                if event.key == pygame.K_d:
-                    cat.move_right(dt, screen)
+        if keys[pygame.K_w]:
+            screen.fill((0,0,0))    
+            cat.move_up(dt, screen)
 
-                if event.key == pygame.K_a:
-                    cat.move_left(dt, screen)
+        if keys[pygame.K_s]:
+            screen.fill((0,0,0))    
+            cat.move_down(dt, screen)
 
-                if event.key == pygame.K_w:
-                    cat.move_up(dt, screen)
+        if keys[pygame.K_a]:
+            screen.fill((0,0,0))    
+            cat.move_left(dt, screen)
 
-                if event.key == pygame.K_s:
-                    cat.move_down(dt, screen)
+        if keys[pygame.K_d]:
+            screen.fill((0,0,0))    
+            cat.move_right(dt, screen)
 
-        clock.tick(FPS)
+        if keys[pygame.K_SPACE]:
+            screen.fill((0,0,0))    
+            cat.rotate(dt, screen)
+
         pygame.display.flip()
+        clock.tick(60)
 
-    pygame.quit()
+
+    #         # key commands
+    #         if event.type == pygame.KEYDOWN:
+    #             if event.key == pygame.K_SPACE:
+    #                 cat.rotate(1, screen)
+    #
+    #             if event.key == pygame.K_d:
+    #                 cat.move_right(dt, screen)
+    #
+    #             if event.key == pygame.K_a:
+    #                 cat.move_left(dt, screen)
+    #
+    #             if event.key == pygame.K_w:
+    #                 cat.move_up(dt, screen)
+    #
+    #             if event.key == pygame.K_s:
+    #                 cat.move_down(dt, screen)
+    #
+    #     clock.tick(FPS)
+    #     pygame.display.flip()
+    #
+    # pygame.quit()
 
 
 def run():

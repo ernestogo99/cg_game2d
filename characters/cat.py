@@ -33,34 +33,29 @@ class Cat:
         m = Transformations.create_transformation_matrix()
         m = Transformations.compose_rotation(m, ang)
         self.polygon = Transformations.apply_transformation(self.polygon, m)
-        screen.fill((0, 0, 0))
         self._draw(screen)
 
     def move_right(self, dt, screen) -> None:
         m = Transformations.create_transformation_matrix()
         m = Transformations.compose_translation(m, 10*dt, 0)
         self.polygon = Transformations.apply_transformation(self.polygon, m)
-        screen.fill((0, 0, 0))
         self._draw(screen)
 
     def move_left(self, dt, screen) -> None:
         m = Transformations.create_transformation_matrix()
         m = Transformations.compose_translation(m, -10*dt, 0)
         self.polygon = Transformations.apply_transformation(self.polygon, m)
-        screen.fill((0, 0, 0))
         self._draw(screen)
 
     def move_down(self, dt, screen) -> None:
         m = Transformations.create_transformation_matrix()
         m = Transformations.compose_translation(m, 0, 10*dt)
         self.polygon = Transformations.apply_transformation(self.polygon, m)
-        screen.fill((0, 0, 0))
         self._draw(screen)
 
     def move_up(self, dt, screen) -> None:
         m = Transformations.create_transformation_matrix()
         m = Transformations.compose_translation(m, 0, -10*dt)
         self.polygon = Transformations.apply_transformation(self.polygon, m)
-        screen.fill((0, 0, 0))
         self._draw(screen)
 
