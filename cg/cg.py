@@ -7,8 +7,8 @@ import os
 
 
 class Screen:
-    def create_screen(screen_width, screen_height):
-        return pygame.display.set_mode((screen_width, screen_height))
+    def __init__(self, screen_width, screen_height) -> None:
+        self.display = pygame.display.set_mode((screen_width, screen_height))
 
     def get_pixel(screen, x, y):
         color = screen.get_at((x, y))
