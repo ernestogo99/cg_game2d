@@ -142,6 +142,9 @@ class Polygon:
     def __init__(self, points=[]):
         self.points = points
 
+    def insert_vertex(self, x, y):
+        self.points.append([x, y])
+
     def y_min(self):
         return min(int(row[1]) for row in self.points)
 
@@ -158,8 +161,27 @@ class Polygon:
 
         return center_x, center_y
 
-    def insert_vertex(self, x, y):
-        self.points.append([x, y])
+    def check_collision(self, rectangle):
+        rect1_x1, rect1_y1, rect1_x2, rect1_y2 = self.get_rectangle_bounds()
+        rect2_x1, rect2_y1, rect2_x2, rect2_y2 = rectangle.get_rectangle_bounds()
+
+        return (
+            rect1_x1 <= rect2_x2
+            and rect1_x2 >= rect2_x1
+            and rect1_y1 <= rect2_y2
+            and rect1_y2 >= rect2_y1
+        )
+
+    def get_rectangle_bounds(self):
+        x_coords = [point[0] for point in self.points]
+        y_coords = [point[1] for point in self.points]
+
+        x1 = min(x_coords)
+        y1 = min(y_coords)
+        x2 = max(x_coords)
+        y2 = max(y_coords)
+
+        return x1, y1, x2, y2
 
 
 class TexturePolygon:
@@ -190,6 +212,28 @@ class TexturePolygon:
         center_y = int(y_sum / num_points)
 
         return center_x, center_y
+
+    def check_collision(self, rectangle):
+        rect1_x1, rect1_y1, rect1_x2, rect1_y2 = self.get_rectangle_bounds()
+        rect2_x1, rect2_y1, rect2_x2, rect2_y2 = rectangle.get_rectangle_bounds()
+
+        return (
+            rect1_x1 <= rect2_x2
+            and rect1_x2 >= rect2_x1
+            and rect1_y1 <= rect2_y2
+            and rect1_y2 >= rect2_y1
+        )
+
+    def get_rectangle_bounds(self):
+        x_coords = [point[0] for point in self.points]
+        y_coords = [point[1] for point in self.points]
+
+        x1 = min(x_coords)
+        y1 = min(y_coords)
+        x2 = max(x_coords)
+        y2 = max(y_coords)
+
+        return x1, y1, x2, y2
 
 
 class Draw:
