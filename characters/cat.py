@@ -2,7 +2,6 @@ from cg.cg import Draw, Screen, Texture, TexturePolygon, Transformations, Polygo
 
 
 class Bullet:
-
     def __init__(self, x, y) -> None:
         self.polygon = Polygon(
             [
@@ -14,23 +13,23 @@ class Bullet:
         ) 
         self.color = (0, 255, 0)
 
-    def move(self, screen):
+    def draw(self, screen):
+        Draw.draw_polygon(screen, self.polygon, (5, 219, 0))
+
+    def move(self):
         m = Transformations.create_transformation_matrix()
         m = Transformations.compose_translation(m, 0, -10)
         self.polygon = Transformations.apply_transformation(self.polygon, m)
-        Draw.draw_polygon(screen, self.polygon, (5, 219, 0))
 
 
 class Cat:
-
     def __init__(self, windows, viewports) -> None:
-        self.texture = Texture.import_texture("spaceship3.webp")
+        self.texture = Texture.import_texture("spaceship3_copy.png")
         self.polygon = TexturePolygon(
             [
-                [360, 520, 0, 0],
-                [360, 610, 0, 1],
-                [440, 610, 1, 1],
-                [440, 520, 1, 0]
+                [400, 510, 0.5, 0],
+                [360, 590, 0, 1],
+                [440, 590, 1, 1],
             ]
         )
         self.windows = windows
@@ -39,7 +38,7 @@ class Cat:
     def draw(self, screen) -> None:
         pol = Screen.mapping_window(self.polygon, self.windows[0], self.viewports[0])
         Texture.scanline_with_texture(screen, pol, self.texture)
-        # Draw.draw_polygon(screen, self.polygon, (0, 0, 255))
+        # Draw.draw_polygon(screen, self.polygon, (1, 0, 255))
 
         # pol = Screen.mapping_window(self.polygon, self.windows[0], self.viewports[1])
         # Texture.scanline_with_texture(screen, pol, self.texture)
