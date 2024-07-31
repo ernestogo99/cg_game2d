@@ -10,10 +10,9 @@ pygame.init()
 FPS = 30
 clock = pygame.time.Clock()
 
-width = 800
-height = 600
-
-screen = Screen(width, height).display
+WIDTH = 800
+HEIGHT = 600
+screen = Screen(WIDTH, HEIGHT).display
 
 
 def run():
@@ -41,18 +40,13 @@ def run():
         keys = pygame.key.get_pressed()
         
         # movement
-        if keys[pygame.K_w]:
-            cat.move_up(dt)
-
-        if keys[pygame.K_s]:
-            cat.move_down(dt)
-
         if keys[pygame.K_a]:
             cat.move_left(dt)
 
         if keys[pygame.K_d]:
             cat.move_right(dt)
 
+        # drawing
         screen.fill((0, 0, 0))
         space.draw(screen)
         cat.draw(screen)

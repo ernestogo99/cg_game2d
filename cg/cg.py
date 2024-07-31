@@ -169,6 +169,12 @@ class TexturePolygon:
     def insert_vertex(self, points):
         self.polygon += points
 
+    def x_min(self):
+        return min(int(row[0]) for row in self.points)
+
+    def x_max(self):
+        return max(int(row[0]) for row in self.points)
+
     def y_min(self):
         return min(int(row[1]) for row in self.points)
 

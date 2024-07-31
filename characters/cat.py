@@ -24,13 +24,13 @@ class Bullet:
 class Cat:
 
     def __init__(self, windows, viewports) -> None:
-        self.texture = Texture.import_texture("cat_cg.jpeg")
+        self.texture = Texture.import_texture("spaceship3.webp")
         self.polygon = TexturePolygon(
             [
-                [100, 99, 0, 0],
-                [100, 200, 0, 1],
-                [200, 200, 1, 1],
-                [200, 100, 1, 0]
+                [360, 520, 0, 0],
+                [360, 610, 0, 1],
+                [440, 610, 1, 1],
+                [440, 520, 1, 0]
             ]
         )
         self.windows = windows
@@ -39,6 +39,7 @@ class Cat:
     def draw(self, screen) -> None:
         pol = Screen.mapping_window(self.polygon, self.windows[0], self.viewports[0])
         Texture.scanline_with_texture(screen, pol, self.texture)
+        # Draw.draw_polygon(screen, self.polygon, (0, 0, 255))
 
         # pol = Screen.mapping_window(self.polygon, self.windows[0], self.viewports[1])
         # Texture.scanline_with_texture(screen, pol, self.texture)
@@ -52,14 +53,18 @@ class Cat:
         self.polygon = Transformations.apply_transformation(self.polygon, m)
 
     def move_right(self, dt) -> None:
-        m = Transformations.create_transformation_matrix()
-        m = Transformations.compose_translation(m, 10*dt, 0)
-        self.polygon = Transformations.apply_transformation(self.polygon, m)
+        limit_right = self.polygon.x_max() == 800
+        if not limit_right: 
+            m = Transformations.create_transformation_matrix()
+            m = Transformations.compose_translation(m, 10*dt, 0)
+            self.polygon = Transformations.apply_transformation(self.polygon, m)
 
     def move_left(self, dt) -> None:
-        m = Transformations.create_transformation_matrix()
-        m = Transformations.compose_translation(m, -10*dt, 0)
-        self.polygon = Transformations.apply_transformation(self.polygon, m)
+        limit_left = self.polygon.x_min() == 0
+        if not limit_left:
+            m = Transformations.create_transformation_matrix()
+            m = Transformations.compose_translation(m, -10*dt, 0)
+            self.polygon = Transformations.apply_transformation(self.polygon, m)
 
     def move_down(self, dt) -> None:
         m = Transformations.create_transformation_matrix()
