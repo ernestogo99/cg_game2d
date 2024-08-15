@@ -10,9 +10,11 @@ class Screen:
     def __init__(self, screen_width, screen_height) -> None:
         self.display = pygame.display.set_mode((screen_width, screen_height))
 
+
     def get_pixel(screen, x, y):
         color = screen.get_at((x, y))
         return (color[0], color[1], color[2], color[3])
+
 
     def get_pixel_with_texture(texture, x, y):
         num_rows, num_cols, _ = texture.shape
@@ -26,6 +28,7 @@ class Screen:
         color = texture[y][x]
 
         return (color[0], color[1], color[2])
+
 
     def mapping_window(polygon, window, viewport):
         initial_x_viewport = viewport[0]
@@ -56,6 +59,7 @@ class Transformations:
     def create_transformation_matrix():
         return np.identity(3)
 
+
     def compose_translation(matrix, tx, ty):
         return (
             np.array(
@@ -68,6 +72,7 @@ class Transformations:
             @ matrix
         )
 
+    
     def compose_scale(matrix, sx, sy):
         return (
             np.array(
@@ -79,6 +84,7 @@ class Transformations:
             )
             @ matrix
         )
+
 
     def compose_rotation(matrix, ang):
         ang = (ang * np.pi)/180
@@ -92,18 +98,6 @@ class Transformations:
             @ matrix
         )
 
-    #bugando
-    def compose_mirroring(matrix):
-        return (
-            np.array(
-                [
-                    [-1, 0, 0],
-                    [0, -1, 0],
-                    [0, 0, 1]
-                ]
-            )
-            @ matrix
-        )
 
     def compose_shear(matrix, cx, cy):
         return (
@@ -116,6 +110,7 @@ class Transformations:
             )
             @ matrix
         )
+
 
     def apply_transformation(polygon, matrix):
         points = []
@@ -142,14 +137,18 @@ class Polygon:
     def __init__(self, points=[]):
         self.points = points
 
+
     def insert_vertex(self, x, y):
         self.points.append([x, y])
+
 
     def y_min(self):
         return min(int(row[1]) for row in self.points)
 
+
     def y_max(self):
         return max(int(row[1]) for row in self.points)
+
 
     def center(self):
         x_sum = sum(row[0] for row in self.points)
@@ -161,6 +160,7 @@ class Polygon:
 
         return center_x, center_y
 
+
     def check_collision(self, rectangle):
         rect1_x1, rect1_y1, rect1_x2, rect1_y2 = self.get_rectangle_bounds()
         rect2_x1, rect2_y1, rect2_x2, rect2_y2 = rectangle.get_rectangle_bounds()
@@ -171,6 +171,7 @@ class Polygon:
             and rect1_y1 <= rect2_y2
             and rect1_y2 >= rect2_y1
         )
+
 
     def get_rectangle_bounds(self):
         x_coords = [point[0] for point in self.points]
@@ -188,20 +189,26 @@ class TexturePolygon:
     def __init__(self, points=[]):
         self.points = points
 
+
     def insert_vertex(self, points):
         self.polygon += points
+
 
     def x_min(self):
         return min(int(row[0]) for row in self.points)
 
+
     def x_max(self):
         return max(int(row[0]) for row in self.points)
+
 
     def y_min(self):
         return min(int(row[1]) for row in self.points)
 
+
     def y_max(self):
         return max(int(row[1]) for row in self.points)
+
 
     def center(self):
         x_sum = sum(row[0] for row in self.points)
@@ -213,6 +220,7 @@ class TexturePolygon:
 
         return center_x, center_y
 
+
     def check_collision(self, rectangle):
         rect1_x1, rect1_y1, rect1_x2, rect1_y2 = self.get_rectangle_bounds()
         rect2_x1, rect2_y1, rect2_x2, rect2_y2 = rectangle.get_rectangle_bounds()
@@ -223,6 +231,7 @@ class TexturePolygon:
             and rect1_y1 <= rect2_y2
             and rect1_y2 >= rect2_y1
         )
+
 
     def get_rectangle_bounds(self):
         x_coords = [point[0] for point in self.points]
@@ -249,6 +258,7 @@ class Draw:
             y = screen.get_height() - 1
 
         gfxdraw.pixel(screen, x, y, color)
+
 
     def bresenham(screen, initial_x, initial_y, final_x, final_y, color):
         dx = final_x - initial_x
@@ -281,6 +291,7 @@ class Draw:
 
             p += dy2
 
+
     def dda(screen, initial_x, initial_y, final_x, final_y, color):
         dx = final_x - initial_x
         dy = final_y - initial_y
@@ -303,7 +314,7 @@ class Draw:
             y = y + steps_y
             Draw.set_pixel(screen, round(x), round(y), color)
 
-    # TO DO: bugando
+
     def anti_alising_dda(screen, initial_x, initial_y, final_x, final_y, color):
         dx = final_x - initial_x
         dy = final_y - initial_y
@@ -334,12 +345,14 @@ class Draw:
                 # bugando aqui
                 Draw.set_pixel(screen, int(x), int(y), round((1 - prop) * color))
                 Draw.set_pixel(screen, int(x), int(y + Draw.__sign(step_y)), round(prop * color))
+
     
     def draw_polygon(screen, polygon, color):
         for i in range(len(polygon.points) - 1):
             Draw.dda(screen, polygon.points[i][0], polygon.points[i][1], polygon.points[i + 1][0], polygon.points[i + 1][1], color)
 
         Draw.dda(screen, polygon.points[len(polygon.points) - 1][0], polygon.points[len(polygon.points) - 1][1], polygon.points[0][0], polygon.points[0][1], color)
+
 
     def circumference(screen, x_center, y_center, radius, color):
         c = Polygon()
@@ -348,6 +361,7 @@ class Draw:
             c.insert_vertex(np.floor(x_center + radius * np.cos(angle)), np.floor(y_center + radius * np.sin(angle)))
 
         c.draw_polygon(screen, color)
+
         
     def __sign(x):
         if x < 0:
@@ -390,6 +404,7 @@ class Color:
             if y >= 1:
                 stack.append((x, y - 1))
 
+
     # TO DO: alterar
     def boundary_fill(self, x, y, color, border_color=None):
         stack = [(x, y)]
@@ -418,6 +433,7 @@ class Color:
 
             if y >= 1:
                 stack.append((x, y - 1))
+
 
     def scanline_base(screen, polygon, color):
         y_min = polygon.y_min()
@@ -459,6 +475,7 @@ class Color:
                 for xk in range(x1, x2 + 1):
                     Draw.set_pixel(screen, xk, y, color)
 
+
     def __intersection_base(y, segment):
         xi = segment[0][0]
         yi = segment[0][1]
@@ -483,6 +500,7 @@ class Texture:
     def import_texture(img_name):
         cg_dir = os.getcwd()
         return np.asarray(Image.open(os.path.join(cg_dir, "resources", img_name)))
+
 
     def scanline_with_texture(screen, polygon, texture):
         y_min = polygon.y_min()
@@ -524,6 +542,7 @@ class Texture:
                     color = Screen.get_pixel_with_texture(texture, tx, ty)
 
                     Draw.set_pixel(screen, xk, y, color)
+
 
     def __intersection_with_texture(y, segment):
         pi = segment[0]
