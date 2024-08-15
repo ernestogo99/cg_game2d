@@ -342,7 +342,6 @@ class Draw:
                 Draw.set_pixel(screen, int(x), int(y + Draw.__sign(step_y)), round(prop * color))
             else:
                 prop = abs(x - int(x))
-                # bugando aqui
                 Draw.set_pixel(screen, int(x), int(y), round((1 - prop) * color))
                 Draw.set_pixel(screen, int(x), int(y + Draw.__sign(step_y)), round(prop * color))
 
@@ -360,7 +359,7 @@ class Draw:
         for angle in np.arange(0, 2 * np.pi, 0.25):
             c.insert_vertex(np.floor(x_center + radius * np.cos(angle)), np.floor(y_center + radius * np.sin(angle)))
 
-        c.draw_polygon(screen, color)
+        Draw.draw_polygon(screen, c, color)
 
         
     def __sign(x):
@@ -371,9 +370,8 @@ class Draw:
 
 
 class Color:
-    # TO DO: alterar
-    def flood_fill(self, x, y, color, animation=False):
-        initial_color = Color(Screen.get_pixel(x, y))
+    def flood_fill(self, screen, width, height, x, y, color, animation=False):
+        initial_color = screen.get_at((x, y))
 
         if color == initial_color:
             return
@@ -383,29 +381,28 @@ class Color:
         while stack:
             x, y = stack.pop()
 
-            if Color(Screen.get_pixel(x, y)) != initial_color:
+            if screen.get_at((x, y)) != initial_color:
                 continue
 
             if animation:
-                time.sleep(0.000001)
+                time.sleep(0.0001) 
                 pygame.display.update()
 
-            Draw.set_pixel(x, y, color)
+            screen.set_at((x, y), color)
 
-            if x + 1 < self.width:
+            if x + 1 < width:
                 stack.append((x + 1, y))
 
-            if x >= 1:
+            if x > 0:
                 stack.append((x - 1, y))
 
-            if y + 1 < self.height:
+            if y + 1 < height:
                 stack.append((x, y + 1))
 
-            if y >= 1:
+            if y > 0:
                 stack.append((x, y - 1))
 
 
-    # TO DO: alterar
     def boundary_fill(self, x, y, color, border_color=None):
         stack = [(x, y)]
 

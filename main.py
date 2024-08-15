@@ -17,10 +17,6 @@ screen = Screen(WIDTH, HEIGHT).display
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 
-# score
-score = 0
-enemies_score = 0
-
 
 def home_screen():
     window = [0, 0, 800, 600]
@@ -33,8 +29,11 @@ def home_screen():
     space = Background(windows, viewports)
     img = Image(windows, viewports, "spaceinvaders.png")
 
-   
-    color_filler = Color(screen, WIDTH, HEIGHT)
+    color_filler = Color()
+
+    screen.fill((0, 0, 0))
+    img.draw(screen)
+    space.draw(screen)
 
     running = True
     while running:
@@ -48,12 +47,50 @@ def home_screen():
                 elif event.key == pygame.K_ESCAPE:  
                     running = False
 
+        Draw.circumference(screen, 650, 500, 50, (255, 255, 255))  
+        color_filler.flood_fill(
+            screen,
+            WIDTH,
+            HEIGHT,
+            650,
+            500,
+            (255, 165, 0),
+            animation=True,
+        )
+
+        pygame.display.flip()
+        clock.tick(60)
+
+    pygame.quit()
+
+
+def instructions():
+    window = [0, 0, 800, 600]
+    viewport1 = [0, 0, 800, 600]
+    viewport2 = [450, 0, 500, 55]
+
+    windows = [window]
+    viewports = [viewport1, viewport2]
+
+    space = Background(windows, viewports)
+    img = Image(windows, viewports, "instructions.png")
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    py_invaders()
+                    return
+                elif event.key == pygame.K_ESCAPE:  
+                    running = False
+
         screen.fill((0, 0, 0))
         img.draw(screen)
         space.draw(screen)
-        Draw.circumference(screen, 650, 500, 50, (255, 255, 255))  
-        color_filler.flood_fill2(650, 500, (255, 165, 0), animation=False)
-       
+
         pygame.display.flip()
         clock.tick(60)
 
@@ -89,6 +126,10 @@ def py_invaders():
     bullets = []
     spaceship_cooldown = 0
 
+    # score
+    score = 0
+    enemies_score = 0
+
     while True:
         if pygame.event.get(pygame.QUIT): break
         pygame.event.pump()
@@ -115,8 +156,7 @@ def py_invaders():
             enemies.append(Enemy(windows, viewports))
 
         for enemy in enemies:
-            if score == 10:
-                enemy.shoot = True
+            enemy.shoot = True
             enemy.move_down(dt)
             enemy.move(dt)
             enemy.draw(screen)
@@ -145,7 +185,7 @@ def py_invaders():
                 del(spaceship)
                 del(bullets)
                 del(enemy_bullets)
-                game_over()
+                game_over(score, enemies_score)
                 return
 
             # check collision with enemy bullet
@@ -157,7 +197,7 @@ def py_invaders():
                         del(spaceship)
                         del(bullets)
                         del(enemy_bullets)
-                        game_over()
+                        game_over(score, enemies_score)
                         return
                     else:
                         enemy_bullet.draw(screen)
@@ -206,40 +246,7 @@ def py_invaders():
         dt = clock.tick(FPS)/1000
 
 
-def instructions():
-    window = [0, 0, 800, 600]
-    viewport1 = [0, 0, 800, 600]
-    viewport2 = [450, 0, 500, 55]
-
-    windows = [window]
-    viewports = [viewport1, viewport2]
-
-    space = Background(windows, viewports)
-    img = Image(windows, viewports, "instructions.png")
-
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    py_invaders()
-                    return
-                elif event.key == pygame.K_ESCAPE:  
-                    running = False
-
-        screen.fill((0, 0, 0))
-        img.draw(screen)
-        space.draw(screen)
-
-        pygame.display.flip()
-        clock.tick(60)
-
-    pygame.quit()
-
-
-def game_over():
+def game_over(score, enemies_score):
     window = [0, 0, 800, 600]
     viewport1 = [0, 0, 800, 600]
     viewport2 = [450, 0, 500, 55]
@@ -250,6 +257,7 @@ def game_over():
     space = Background(windows, viewports)
     img = Image(windows, viewports, "game_over.png")
 
+    print("\n --------------------------------------")
     print(f"\n Inimigos destruidos: {score}")
     print(f"\n Inimigos que passaram: {enemies_score}")
     print(f"\n Pontuação final: {score-enemies_score}")
