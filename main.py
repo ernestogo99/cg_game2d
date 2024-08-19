@@ -130,8 +130,9 @@ def py_invaders():
     score = 0
     enemies_score = 0
 
-    while True:
-        if pygame.event.get(pygame.QUIT): break
+    running = True
+    while running:
+        if pygame.event.get(pygame.QUIT): running = False
         pygame.event.pump()
 
         keys = pygame.key.get_pressed()
@@ -224,7 +225,7 @@ def py_invaders():
                 if enemies:
                     for enemy in enemies:
                         if enemy.polygon.check_collision(bullet.polygon):
-                            bullets.pop(0)
+                            bullets.pop(-1)
                             del(bullet)
                             enemies.pop(0)
                             del(enemy)
@@ -233,12 +234,12 @@ def py_invaders():
                             bullet.draw(screen)
                             enemy.draw(screen)
                             if bullet.polygon.y_min() <= 0:
-                                bullets.pop(0)
+                                bullets.pop(-1)
                                 del(bullet)
                 else:
                     bullet.draw(screen)
                     if bullet.polygon.y_min() <= 0:
-                        bullets.pop(0)
+                        bullets.pop(-1)
                         del(bullet)
 
 
