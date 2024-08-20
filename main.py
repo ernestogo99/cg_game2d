@@ -47,6 +47,16 @@ def home_screen():
                 elif event.key == pygame.K_ESCAPE:  
                     running = False
 
+        Draw.dda(
+            screen,
+            initial_x=135,
+            initial_y=260,
+            final_x=640,
+            final_y=260,
+            color=(0, 150, 255),
+            animation=True,
+        )
+
         Draw.circumference(screen, 650, 500, 50, (255, 255, 255))  
         color_filler.flood_fill(
             screen,
@@ -54,10 +64,9 @@ def home_screen():
             HEIGHT,
             650,
             500,
-            (255, 165, 0),
-            animation=False,
+            color=(255, 165, 0),
+            animation=True,
         )
-        Draw.anti_alising_dda(screen, 50, 600, 250, 500, [0, 150, 255])
 
         pygame.display.flip()
         clock.tick(60)

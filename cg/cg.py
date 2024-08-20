@@ -292,7 +292,7 @@ class Draw:
             p += dy2
 
 
-    def dda(screen, initial_x, initial_y, final_x, final_y, color):
+    def dda(screen, initial_x, initial_y, final_x, final_y, color, animation=False):
         dx = final_x - initial_x
         dy = final_y - initial_y
 
@@ -310,6 +310,9 @@ class Draw:
         Draw.set_pixel(screen, round(x), round(y), color)
 
         for _ in range(int(steps)):
+            if animation:
+                time.sleep(0.01)
+                pygame.display.update()
             x = x + steps_x
             y = y + steps_y
             Draw.set_pixel(screen, round(x), round(y), color)
