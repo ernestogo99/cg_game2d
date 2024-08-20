@@ -55,8 +55,9 @@ def home_screen():
             650,
             500,
             (255, 165, 0),
-            animation=True,
+            animation=False,
         )
+        Draw.anti_alising_dda(screen, 50, 600, 250, 500, [0, 150, 255])
 
         pygame.display.flip()
         clock.tick(60)
