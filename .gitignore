@@ -8,3 +8,6 @@
 __pycache__/
 *.pyc
 *.pyo
+
+# Ignore virtual environment folder
+venv/
